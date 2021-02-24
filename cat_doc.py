@@ -24,13 +24,12 @@ List of lines in new "out.md" markdown file.
 Gets all .md files in cwd (except the output .md) and concatenates them.
 '''
 
-def markdownLineList():
+def createMarkdownLines():
     markdownFiles = []
     for file in sortedFiles:
         if file.endswith('.md') and not file == outFile:
             with open(file, 'r') as f:
-                markdownDoc = [line for line in f.read().splitlines()]
-                for line in markdownDoc:
+                for line in f.read().splitlines():
                     markdownFiles.append(line)
 
         markdownFiles.append('')
@@ -40,7 +39,7 @@ def markdownLineList():
 # ------------------------------------------------------------------------------------------------------------------------------------------
 
 def main():
-    markdownList = markdownLineList()
+    markdownList = createMarkdownLines()
     outputMarkdownStr = '\n'.join(markdownList)
     with open(outFile, 'w+') as f:
         f.write(outputMarkdownStr)

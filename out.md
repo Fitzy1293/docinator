@@ -1,3 +1,4 @@
+
 # This is a Simple Markdown Document Using Pandoc
 
 ----  
@@ -37,5 +38,11 @@ I am trying to build a program where you run something like:
 ## This is my 3rd document YAY
 
 *Can it combine three documents,* **let's find out.**
+
+# Docinator
+
+## What is this?
+
+This is a program for writing different documents in markdown, then combining them and compiling for pandoc.
 
 
