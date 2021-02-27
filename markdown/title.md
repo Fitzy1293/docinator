@@ -1,16 +1,20 @@
 ---
-title: "A Simple Markdown Document Using Pandoc"
+title: "**A Simple Markdown Document Using Pandoc**"
 author: John Doe
 date: 2021
-#geometry: "left=3cm,right=3cm,top=2cm,bottom=2cm"
-output: pdf_document
+geometry: ["left=3.5cm","right=2cm","bottom=3.5cm","top=3cm"]
 header-includes:
-  \usepackage{blindtext}
+  - \usepackage{listings}
+  - \usepackage{xcolor}
+  - \usepackage{amsmath}
 ---
+
+\noindent\rule{\textwidth}{1pt}
 
 \tableofcontents
 
-----  
+\noindent\rule{\textwidth}{1pt}
+
 
 # Why use markdown?
 
@@ -22,13 +26,28 @@ header-includes:
 
 Here we can easily embed latex, without the overhead of a big latex doc to keep track of!
 
-- $\int_{a}^{b} cos(x) \,dx = sin(x) + c$
+\begin{align*}
+    \int_a^b cos(x) \,dx &= sin(x) + c \\
+    \oint \! \nabla f dt  &= 0
+\end{align*}
+
+
+
 
 # Running docinator
 
-**We compile the document like so:**
+- Make it executable and run this command in the shell:
+    - `./docinator.sh`
 
-  - `pandoc test.md -o test.pdf`
+<test>
 
-Make sure to have a proper \LaTeX{} install before doing this.
+ ```
+  #!/bin/sh
+  echo "Running pandoc"
+  pandoc -f markdown ./markdown/title.md ./markdown/content/*.md -o markdown.pdf
+```
+
+Make sure to have a proper LaTeX install before doing this.
 You can use whatever IDE/text editor works best for you.
+
+\noindent\rule{\textwidth}{1pt}
