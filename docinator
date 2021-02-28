@@ -1,0 +1,63 @@
+#!/bin/env bash
+
+green='\e[0;32m'
+cyan='\e[0;36m'
+nc='\e[0m'
+blue='\e[1;34m'
+magenta='\e[1;35m'
+
+originalDir="${PWD}"
+latexLine="\n\\\noindent\\\rule{\\\textwidth}{1pt}"
+tocLatex="\\\tableofcontents"
+class="$(basename ${originalDir})"
+nameConfig="${originalDir}/name-config"
+
+if [ ${1} == "wizard" ]; then
+    printf "${green}$(figlet Docinator)${nc}\n"
+    printf "${magenta}$(figlet Wizard)${nc}\n"
+
+    if [ -f ${nameConfig} ]; then
+        name="$(cat ${originalDir}/name-config)"
+    else
+        touch name-config
+        printf "${magenta}Enter your name for use in the document titles:${nc} "
+        read name
+        echo
+        echo ${name} > ${nameConfig}
+    fi
+
+    if [ $# -eq 1 ]; then
+        configDir="./"
+        printf "${green}Adding assignments to:\n\t${cyan}${originalDir}${nc}\n\n"
+    else
+        configDir="${2}"
+        mkdir -p ${configDir}
+        cd ${configDir}
+        printf "${cyan}${originalDir}/${configDir}${nc}\n\n"
+
+    fi
+
+    while true ; do
+        printf "${magenta}Enter a homework assignment (press enter to stop):${nc} "
+        read assignment
+        if [ -z ${assignment} ]; then break; fi
+
+        mkdir -p "${assignment}"
+        mkdir -p "${assignment}/markdown"
+        mkdir -p "${assignment}/markdown/content"
+
+        echo -e "---\ntitle: \"**Class:** *${class}* **Assignment:** *${assignment}*\"\nauthor: \"*${name}*\"\n---" > "${assignment}/markdown/title.md"
+        echo -e "\n${latexLine}\n${tocLatex}\n${latexLine}\n\n# Content" >> "${assignment}/markdown/title.md"
+        echo -e "## Subsection\n\n**You can now begin adding more .md files to the content directory.**" > "${assignment}/markdown/content/1.md"
+
+        pandoc -f markdown ./${assignment}/markdown/title.md ./${assignment}/markdown/content/*.md -o ./${assignment}/${assignment}.pdf
+
+    done
+        tree
+fi
+
+exit 0
+
+
+echo "Running pandoc"
+pandoc -f markdown ./markdown/title.md ./markdown/content/*.md -o markdown.pdf
